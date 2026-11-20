@@ -14,9 +14,10 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.7'
-      - name: Configure Gradle Memory & AndroidX
+      - name: Configure Gradle & Missing Material Theme
         run: |
           printf "org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1g -Dfile.encoding=UTF-8\nandroid.useAndroidX=true\nandroid.enableJetifier=true\n" > gradle.properties
+          sed -i 's/dependencies {/dependencies {\n    implementation("com.google.android.material:material:1.12.0")/' app/build.gradle
       - name: Build Debug APK
         run: gradle assembleDebug --no-daemon
       - name: Upload APK
